@@ -1,0 +1,44 @@
+ivr_config:
+  llm_provider: "openai"
+  tts_provider: "azure"
+  stt_provider: "azure"
+  retry_count: 3
+  default_unknown_prompt: "How can we help you today?"
+  routing:
+    owner:
+      cli_list:
+        - "+15550000000"
+      flow: "internal_flow"
+    allowed:
+      cli_list:
+        - "+15551234567"
+        - "+15557654321"
+      flow: "allowed_flow"
+    unknown:
+      flow: "unknown_flow"
+  flows:
+    internal_flow:
+      prompt: "Good {time_of_day} Mr Brown, how can I assist you today?"
+      intents:
+        speak_to_home:
+          prompt: "Checking your home status..."
+          tool_call: "home_assistant_check"
+          next_flow: "internal_sub_flow"
+    allowed_flow:
+      prompt: "Good {time_of_day}! Welcome to our service. How can we help you today?"
+      intents:
+        speak_to_dad:
+          prompt: "Transferring you to Dad."
+          extension: "200"
+        speak_to_browny:
+          prompt: "Transferring you to Browny."
+          extension: "300"
+    unknown_flow:
+      prompt: "Hello! How can we help you?"
+      intents:
+        sales_call:
+          prompt: "It seems this is a sales call. Goodbye."
+          action: "hangup"
+        scam_call:
+          prompt: "Scam call detected. Transferring you to our scam IVR."
+          extension: "scam_ivr"
