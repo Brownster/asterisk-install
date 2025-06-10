@@ -9,7 +9,9 @@ Collection of scripts and configuration files for building Asterisk.
 
 ## Installation
 
-Run the wrapper script with `sudo` and specify the target system:
+First copy `config/settings.sample` to `config/settings.conf` and edit the values for
+your phones, SIP trunk and Bluetooth settings. Then run the wrapper script with `sudo`
+and specify the target system:
 
 ```bash
 sudo ./setup-asterisk.sh --debian   # Debian based systems
@@ -22,14 +24,8 @@ Dynamic IVR project with its dependencies.
 
 ## Configuration
 
-Edit `/etc/asterisk/pjsip.conf` and replace the placeholder values:
-
-- Update the passwords in `[yealink-auth]` and `[zoiper-auth]` to match your phone credentials.
-- Provide your SIPGate account details in `[sipgate-trunk]` and `[sipgate-auth]` (`client_uri`, `username`, `password`).
-
-Edit `/etc/asterisk/chan_mobile.conf` and set the Bluetooth adapter and mobile phone addresses for your environment.
-
-After modifying the files, reload the Asterisk service so the changes take effect.
+All configuration values are stored in `config/settings.conf`. Update this file with the
+credentials for your phones, SIP trunk and Bluetooth trunk before running the installer.
 
 ## Running the IVR
 
@@ -40,8 +36,9 @@ The demo IVR script is installed as `/var/lib/asterisk/agi-bin/ivr/demo_ivr.py` 
 This repository's setup script also deploys Brownster's [Dynamic IVR with LLM Integration](https://github.com/Brownster/asterisk-ivr).
 The project is cloned to `/var/lib/asterisk/agi-bin/asterisk-ivr` and the Python
 dependencies are installed automatically. A local MariaDB database named
-`freepbx_llm` is created along with a `freepbx_user` account. Update the
-credentials in `asterisk-ivr/config/db_config.yml.yaml` if needed.
+`freepbx_llm` is created along with a `freepbx_user` account whose password is
+set from `DB_PASSWORD` in `config/settings.conf`. Update the credentials in
+`asterisk-ivr/config/db_config.yml.yaml` if needed.
 
 The new IVR can be tested by dialing extension `260` once the installation
 completes.

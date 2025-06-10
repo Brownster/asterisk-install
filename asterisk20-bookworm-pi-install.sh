@@ -15,7 +15,7 @@ echo "Starting Asterisk installation on Raspberry Pi OS (Bookworm)..."
 echo "Step 1: Updating system and installing dependencies..."
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y wget curl gnupg pkg-config build-essential subversion
-sudo apt install -y libedit-dev libssl-dev libjansson-dev libxml2-dev libsqlite3-dev
+sudo apt install -y libedit-dev libssl-dev libjansson-dev libxml2-dev libsqlite3-dev gettext-base
 
 # Ensure system binaries are accessible
 echo "Step 2: Ensuring correct PATH configuration..."
@@ -92,7 +92,9 @@ sudo systemctl start asterisk
 # Installing configuration templates
 echo "Step 13: Installing configuration templates..."
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-sudo cp "$SCRIPT_DIR"/config/*.conf /etc/asterisk/
+for f in "$SCRIPT_DIR"/config/*.conf; do
+    envsubst < "$f" | sudo tee "/etc/asterisk/$(basename "$f")" >/dev/null
+done
 sudo chown asterisk:asterisk /etc/asterisk/*.conf
 
 # Verifying Operation

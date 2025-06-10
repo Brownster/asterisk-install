@@ -4,6 +4,18 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SETTINGS_FILE="$SCRIPT_DIR/config/settings.conf"
+
+if [ ! -f "$SETTINGS_FILE" ]; then
+    echo "Settings file not found. Creating default at $SETTINGS_FILE" >&2
+    cp "$SCRIPT_DIR/config/settings.sample" "$SETTINGS_FILE"
+    echo "Edit the file with your environment details and re-run the script." >&2
+    exit 1
+fi
+
+set -a
+source "$SETTINGS_FILE"
+set +a
 
 usage() {
     echo "Usage: $0 [--debian | --pi]" >&2
@@ -44,11 +56,11 @@ sudo pip3 install -r /var/lib/asterisk/agi-bin/asterisk-ivr/requirements.txt
 
 # Create database for the IVR
 echo "Setting up MariaDB database for IVR..."
-sudo mysql <<'EOF'
+sudo mysql <<EOF
 CREATE DATABASE IF NOT EXISTS freepbx_llm;
-CREATE USER IF NOT EXISTS 'freepbx_user'@'localhost' IDENTIFIED BY 'secure_password';
+CREATE USER IF NOT EXISTS 'freepbx_user'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';
 GRANT ALL PRIVILEGES ON freepbx_llm.* TO 'freepbx_user'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
-echo "Setup complete. Edit /etc/asterisk/pjsip.conf and chan_mobile.conf to set your credentials."
+echo "Setup complete. Configuration was generated from $SETTINGS_FILE."
