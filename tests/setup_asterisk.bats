@@ -5,6 +5,8 @@ setup() {
   mkdir -p "$TMPDIR/bin"
   cp "$BATS_TEST_DIRNAME/../setup-asterisk.sh" "$TMPDIR/"
   chmod +x "$TMPDIR/setup-asterisk.sh"
+  mkdir -p "$TMPDIR/config"
+  cp "$BATS_TEST_DIRNAME/../config/settings.sample" "$TMPDIR/config/settings.conf"
   cat > "$TMPDIR/asterisk20-install.sh" <<'EOM'
 #!/bin/bash
 echo "DEBIAN_INSTALL"

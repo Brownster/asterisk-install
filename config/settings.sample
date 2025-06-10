@@ -1,0 +1,13 @@
+# Sample settings for guided Asterisk installation
+YEALINK_USERNAME=yealink-t42s
+YEALINK_PASSWORD=SecureP@ssw0rd1
+ZOIPER_USERNAME=zoiper
+ZOIPER_PASSWORD=SecureP@ssw0rd2
+SIPGATE_USERNAME=yourusername
+SIPGATE_PASSWORD=SipgateTrunkPassword
+SIPGATE_CLIENT_URI=sip:yourusername@sipgate.co.uk
+ADAPTER_MAC=00:11:22:33:44:55
+MOBILE_MAC=AA:BB:CC:DD:EE:FF
+MOBILE_PORT=1
+DB_PASSWORD=secure_password
+
