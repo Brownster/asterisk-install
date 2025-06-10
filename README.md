@@ -16,7 +16,9 @@ sudo ./setup-asterisk.sh --debian   # Debian based systems
 sudo ./setup-asterisk.sh --pi       # Raspberry Pi OS
 ```
 
-The script installs Asterisk 20, copies the configuration files to `/etc/asterisk` and places the AGI scripts under `/var/lib/asterisk/agi-bin`.
+The script installs Asterisk 20, copies the configuration files to `/etc/asterisk`,
+places the AGI scripts under `/var/lib/asterisk/agi-bin`, and deploys the
+Dynamic IVR project with its dependencies.
 
 ## Configuration
 
@@ -32,3 +34,14 @@ After modifying the files, reload the Asterisk service so the changes take effec
 ## Running the IVR
 
 The demo IVR script is installed as `/var/lib/asterisk/agi-bin/ivr/demo_ivr.py` and is invoked by extension `250` in `extensions.conf`. Dial `250` from one of the configured phones to test it. The IVR configuration files can be found in `/var/lib/asterisk/agi-bin/ivr/config`.
+
+### Dynamic IVR with LLM
+
+This repository's setup script also deploys Brownster's [Dynamic IVR with LLM Integration](https://github.com/Brownster/asterisk-ivr).
+The project is cloned to `/var/lib/asterisk/agi-bin/asterisk-ivr` and the Python
+dependencies are installed automatically. A local MariaDB database named
+`freepbx_llm` is created along with a `freepbx_user` account. Update the
+credentials in `asterisk-ivr/config/db_config.yml.yaml` if needed.
+
+The new IVR can be tested by dialing extension `260` once the installation
+completes.
