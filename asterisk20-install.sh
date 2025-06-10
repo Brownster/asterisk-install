@@ -84,8 +84,14 @@ echo "Step 12: Enabling and starting Asterisk service..."
 sudo systemctl enable asterisk
 sudo systemctl start asterisk
 
+# Installing configuration templates
+echo "Step 13: Installing configuration templates..."
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+sudo cp "$SCRIPT_DIR"/config/*.conf /etc/asterisk/
+sudo chown asterisk:asterisk /etc/asterisk/*.conf
+
 # Verifying Operation
-echo "Step 13: Verifying Asterisk operation..."
+echo "Step 14: Verifying Asterisk operation..."
 echo "To connect to the Asterisk CLI, run: sudo asterisk -rvvv"
 echo "You should see output similar to:"
 echo "Asterisk 20.X.X, Copyright (C) 1999 - 2025 Sangoma, Inc."
