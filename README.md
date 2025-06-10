@@ -27,6 +27,27 @@ Dynamic IVR project with its dependencies.
 All configuration values are stored in `config/settings.conf`. Update this file with the
 credentials for your phones, SIP trunk and Bluetooth trunk before running the installer.
 
+### Finding Bluetooth Details
+
+The installer expects the MAC address of your USB Bluetooth adapter and the phone you
+plan to use as a trunk. Discover the adapter address with either command:
+
+```bash
+hcitool dev          # list adapters
+# or
+bluetoothctl list    # alternative command
+```
+
+Use the displayed address for `ADAPTER_MAC`. To determine the phone's MAC address and
+RFCOMM port, connect the device and run:
+
+```bash
+sudo asterisk -rx "mobile search"
+```
+
+Note the values shown in the output and assign them to `MOBILE_MAC` and `MOBILE_PORT`
+in `config/settings.conf`.
+
 ## Running the IVR
 
 The demo IVR script is installed as `/var/lib/asterisk/agi-bin/ivr/demo_ivr.py` and is invoked by extension `250` in `extensions.conf`. Dial `250` from one of the configured phones to test it. The IVR configuration files can be found in `/var/lib/asterisk/agi-bin/ivr/config`.
